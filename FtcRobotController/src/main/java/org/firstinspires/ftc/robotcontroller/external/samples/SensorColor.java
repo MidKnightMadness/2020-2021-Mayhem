@@ -73,7 +73,7 @@ public class SensorColor extends LinearOpMode {
   /** The colorSensor field will contain a reference to our color sensor hardware object */
   NormalizedColorSensor colorSensor;
 
-  /** The relativeLayout field is used to aid in providing interesting visual feedback
+  /** The relativeLayout field is used to aid in providing interesting org.firstinspires.ftc.teamcode.visual feedback
    * in this sample application; you probably *don't* need this when you use a color sensor on your
    * robot. Note that you won't see anything change on the Driver Station, only on the Robot Controller. */
   View relativeLayout;

@@ -278,7 +278,7 @@ Version 5.5 requires Android Studio 4.0 or later.
 ## Version 5.3 (20191004-112306)
 * Fixes external USB/UVC webcam support
 * Makes various bugfixes and improvements to Blocks page, including but not limited to:
-    * Many visual tweaks
+    * Many org.firstinspires.ftc.teamcode.visual tweaks
     * Browser zoom and window resize behave better
     * Resizing the Java preview pane works better and more consistently across browsers
     * The Java preview pane consistently gets scrollbars when needed
