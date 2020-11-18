@@ -3,8 +3,12 @@ package org.firstinspires.ftc.teamcode.visual;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.vuforia.Vuforia;
+
 import java.util.List;
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
@@ -100,7 +104,26 @@ public class ObjectDetection extends LinearOpMode {
                                     recognition.getLeft(), recognition.getTop());
                             telemetry.addData(String.format("  right,bottom (%d)", i), "%.03f , %.03f",
                                     recognition.getRight(), recognition.getBottom());
+
+                            if (recognition.getLabel().equals("Quad")){
+                                //go to square 1
+                                telemetry.addLine("square 1");
+                                telemetry.update();
+                            }
+                            else if (recognition.getLabel().equals("Single")){
+                                //go to square 2
+                                telemetry.addLine("square 2");
+                                telemetry.update();
+                            }
+                            else{
+                                //go to square 3
+                                telemetry.addLine("square 3");
+                                telemetry.update();
+                            }
+
+
                         }
+
                         telemetry.update();
                     }
                 }
@@ -134,11 +157,59 @@ public class ObjectDetection extends LinearOpMode {
      * Initialize the TensorFlow Object Detection engine.
      */
     private void initTfod() {
+
+
         int tfodMonitorViewId = hardwareMap.appContext.getResources().getIdentifier(
                 "tfodMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         TFObjectDetector.Parameters tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
-        tfodParameters.minResultConfidence = 0.18f;
+        tfodParameters.minResultConfidence = 0.5f;
         tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
         tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_FIRST_ELEMENT, LABEL_SECOND_ELEMENT);
     }
+
+    static void ringDetection(Telemetry telemetry, TFObjectDetector  tfod) {
+        List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
+        if (updatedRecognitions != null) {
+            telemetry.addData("# Object Detected", updatedRecognitions.size());
+            // step through the list of recognitions and display boundary info.
+            int i = 0;
+            for (Recognition recognition : updatedRecognitions) {
+                telemetry.addData(String.format("label (%d)", i), recognition.getLabel());
+                telemetry.addData(String.format("  left,top (%d)", i), "%.03f , %.03f",
+                        recognition.getLeft(), recognition.getTop());
+                telemetry.addData(String.format("  right,bottom (%d)", i), "%.03f , %.03f",
+                        recognition.getRight(), recognition.getBottom());
+
+                if (recognition.getLabel().equals("Quad")) {
+                    //go to square 1
+                    telemetry.addLine("square 1");
+                    telemetry.update();
+                } else if (recognition.getLabel().equals("Single")) {
+                    //go to square 2
+                    telemetry.addLine("square 2");
+                    telemetry.update();
+                } else {
+                    //go to square 3
+                    telemetry.addLine("square 3");
+                    telemetry.update();
+                }
+            }
+
+
+        }
+
+    }
+
+    static void init(HardwareMap hardwareMap, TFObjectDetector tfod, VuforiaLocalizer vuforia){
+        int tfodMonitorViewId = hardwareMap.appContext.getResources().getIdentifier(
+                "tfodMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+        TFObjectDetector.Parameters tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
+        tfodParameters.minResultConfidence = 0.5f;
+        tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
+        tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_FIRST_ELEMENT, LABEL_SECOND_ELEMENT);
+    }
+
+
+
+
 }

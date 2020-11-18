@@ -63,17 +63,28 @@ public class main extends OpMode {
 
     @Override
     public void loop() {
-        //LEDs
 
-
+        //Wheels
         Angle direction = Angle.aTan(gamepad1.left_stick_x, -gamepad1.left_stick_y);
         double speed = Math.hypot(gamepad1.left_stick_x, -gamepad1.left_stick_y) * (1 - gamepad1.right_trigger) * (1 - gamepad1.left_trigger) * (slow ? 0.3 : 1);
         double rotation = gamepad1.right_stick_x * (1 - gamepad1.right_trigger) * (1 - gamepad1.left_trigger) * (slow ? 0.3 : 1);
         drive.setDirection(direction, speed, rotation);
         drive.update();
 
+        //intake
+
+
+        //outake/shooter
+
+
+        //conveyer belt
+
+
+        //belt dog
 
     }
+
+
 
     public void stop()
     {
