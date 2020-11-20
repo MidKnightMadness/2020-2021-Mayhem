@@ -24,7 +24,7 @@ import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
  * IMPORTANT: In order to use this OpMode, you need to obtain your own Vuforia license key as
  * is explained below.
  */
-@TeleOp(name = "OfficialRingStackDetection", group = "Concept")
+@TeleOp(name = "LuckyDuckyRingTesty")
 
 public class ObjectDetection extends LinearOpMode {
     private static final String TFOD_MODEL_ASSET = "UltimateGoal.tflite";
@@ -96,8 +96,10 @@ public class ObjectDetection extends LinearOpMode {
                     List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
                     if (updatedRecognitions != null) {
                         telemetry.addData("# Object Detected", updatedRecognitions.size());
+
                         // step through the list of recognitions and display boundary info.
                         int i = 0;
+                        telemetry.addLine("Square 3");
                         for (Recognition recognition : updatedRecognitions) {
                             telemetry.addData(String.format("label (%d)", i), recognition.getLabel());
                             telemetry.addData(String.format("  left,top (%d)", i), "%.03f , %.03f",
@@ -162,12 +164,12 @@ public class ObjectDetection extends LinearOpMode {
         int tfodMonitorViewId = hardwareMap.appContext.getResources().getIdentifier(
                 "tfodMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         TFObjectDetector.Parameters tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
-        tfodParameters.minResultConfidence = 0.5f;
+        tfodParameters.minResultConfidence = 0.27f;
         tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
         tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_FIRST_ELEMENT, LABEL_SECOND_ELEMENT);
     }
 
-    static void ringDetection(Telemetry telemetry, TFObjectDetector  tfod) {
+    public void ringDetection(Telemetry telemetry, TFObjectDetector  tfod) {
         List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
         if (updatedRecognitions != null) {
             telemetry.addData("# Object Detected", updatedRecognitions.size());
@@ -204,7 +206,7 @@ public class ObjectDetection extends LinearOpMode {
         int tfodMonitorViewId = hardwareMap.appContext.getResources().getIdentifier(
                 "tfodMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         TFObjectDetector.Parameters tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
-        tfodParameters.minResultConfidence = 0.5f;
+        tfodParameters.minResultConfidence = 0.27f;
         tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
         tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_FIRST_ELEMENT, LABEL_SECOND_ELEMENT);
     }

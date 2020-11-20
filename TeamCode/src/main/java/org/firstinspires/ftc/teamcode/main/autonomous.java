@@ -20,7 +20,10 @@ public class autonomous extends LinearOpMode {
     @Override
     public void runOpMode()  {
        Visual.init();
-       Visual.ringDetection();
+        Telemetry telemtry = null;
+        TFObjectDetector tfod = null;
+        Visual.ringDetection(telemtry, tfod);
+
 
 
 
