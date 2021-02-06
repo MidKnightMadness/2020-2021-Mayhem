@@ -35,6 +35,9 @@ public class MainCodeWithIntakeMotorNotServoYay extends LinearOpMode{
     private DcMotor rightMotor;
     //outtake servo
     private Servo slicey;
+    //wobble goal servos
+    private Servo rotate;
+    private Servo claw;
     //drivetrain
     
     DcMotor fl;
@@ -134,6 +137,43 @@ public class MainCodeWithIntakeMotorNotServoYay extends LinearOpMode{
         br.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         br.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         
+        //intake servo motors
+        frontRolly = hardwareMap.get(DcMotor.class, "frontRolly");
+        //servo2 = hardwareMap.get(CRServo.class, "servo2");
+        servo1 = hardwareMap.get(CRServo.class, "servo1");
+        //conveyor belt motor
+        ahaha = hardwareMap.get(DcMotor.class, "ahaha");
+        //outtake motors
+        leftMotor = hardwareMap.get(DcMotor.class, "leftMotor");
+        leftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightMotor = hardwareMap.get(DcMotor.class, "rightMotor"); 
+        rightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        //outtake servo
+        slicey = hardwareMap.get(Servo.class, "slicey");
+        //wobble goal servos
+        rotate = hardwareMap.get(Servo.class, "rotate");
+        claw = hardwareMap.get(Servo.class, "claw");
+        telemetry.addData("Status", "Press Play!");
+        telemetry.update();
+        
+        boolean powered = false;
+        boolean shooting = false;
+        boolean intaking = false;
+        boolean reverse = false;
+        boolean lifting = false;
+        boolean clawing = false;
+        int outtakeCounter = 0;
+        int conveyorCounter = 0;
+        int sliceyCounter = 0;
+        int intakeCounter = 0;
+        int clawCounter = 0;
+        int liftCounter = 0;
+        
+        rotate.setDirection(Servo.Direction.REVERSE);
+        
+        
+        
+        
         waitForStart();
         
         while (opModeIsActive()) {
@@ -216,7 +256,7 @@ public class MainCodeWithIntakeMotorNotServoYay extends LinearOpMode{
             bl.setPower(power[2]);
             br.setPower(power[3]);
             
-                
+              /*  
             telemetry.addData("Front left: ", String.valueOf(fl.getPower()));
             telemetry.addData("Front right: ", String.valueOf(fr.getPower()));
             telemetry.addData("Back left: ", String.valueOf(bl.getPower()));
@@ -224,61 +264,41 @@ public class MainCodeWithIntakeMotorNotServoYay extends LinearOpMode{
             
             
             
-            telemetry.update();
+            telemetry.update();*/
         
        
-        //intake servo motors
-        frontRolly = hardwareMap.get(DcMotor.class, "frontRolly");
-        //servo2 = hardwareMap.get(CRServo.class, "servo2");
-        servo1 = hardwareMap.get(CRServo.class, "servo1");
-        //conveyor belt motor
-        ahaha = hardwareMap.get(DcMotor.class, "ahaha");
-        //outtake motors
-        leftMotor = hardwareMap.get(DcMotor.class, "leftMotor");
-        leftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        rightMotor = hardwareMap.get(DcMotor.class, "rightMotor"); 
-        rightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        //outtake servo
-        slicey = hardwareMap.get(Servo.class, "slicey");
         
-        telemetry.addData("Status", "Press Play!");
-        telemetry.update();
         
-        boolean powered = false;
-        boolean shooting = false;
-        boolean intaking = false;
-        boolean reverse = false;
-        int outtakeCounter = 0;
-        int conveyorCounter = 0;
-        int sliceyCounter = 0;
-        int intakeCounter = 0;
         
-        waitForStart();
-        
-        while (opModeIsActive()) {
             
-            while(gamepad1.a){
+            if(gamepad1.a){
                 powered = true;
+            } 
+            else{
+                powered = false;
             }
             
             if (powered){
-                frontRolly.setPower(-0.9);
-                servo1.setPower(0.9);
-                ahaha.setPower(-.6);
+                frontRolly.setPower(-1);
+                servo1.setPower(.9);
+                ahaha.setPower(-1);
             } else {
                 frontRolly.setPower(0.0);
-                servo1.setPower(-0.9);
+                servo1.setPower(0.0);
                 ahaha.setPower(0.0);
             }
             
-            while(gamepad1.b){
+            if(gamepad1.b){
                 reverse = true;
+            } 
+            else{
+                reverse = false;
             }
             
             if (reverse){
-                frontRolly.setPower(0.9);
-                servo1.setPower(-0.9);
-                ahaha.setPower(0.6);
+                frontRolly.setPower(1);
+                servo1.setPower(-.9);
+                ahaha.setPower(1);
             }
         
             /*if(gamepad1.x && conveyorCounter == 0){
@@ -310,8 +330,8 @@ public class MainCodeWithIntakeMotorNotServoYay extends LinearOpMode{
             if(outtakeCounter > 0){
                 outtakeCounter = outtakeCounter-1;
             }
-            telemetry.addData("Outtake status", outtakeCounter);
-            telemetry.update();
+            //telemetry.addData("Outtake status", outtakeCounter);
+            //telemetry.update();
 
             if (shooting) {
                 
@@ -319,7 +339,7 @@ public class MainCodeWithIntakeMotorNotServoYay extends LinearOpMode{
                 rightMotor.setTargetPosition(10000);
                 leftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
                 rightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-                leftMotor.setPower(0.8);
+                leftMotor.setPower(-0.8);
                 rightMotor.setPower(0.8);
             }
             else{
@@ -345,8 +365,44 @@ public class MainCodeWithIntakeMotorNotServoYay extends LinearOpMode{
             if(sliceyCounter > 0){
                 sliceyCounter = sliceyCounter-1;
             }
-            telemetry.addData("Slicey status", sliceyCounter);
+            //telemetry.addData("Slicey status", sliceyCounter);
+            //telemetry.update();
+            
+            
+            //"lifting"
+            if(this.gamepad1.dpad_up && liftCounter == 0){
+                lifting = !lifting;
+                liftCounter = 200;
+            } 
+            
+            if (liftCounter > 0){
+                liftCounter = liftCounter-1;
+            }
+            
+            if (lifting){
+                rotate.setPosition(0.7); 
+                
+            } else {
+                rotate.setPosition(0);
+            }
+            
+            //clawing
+            if (this.gamepad1.dpad_down && clawCounter == 0){
+                clawing = !clawing;
+                clawCounter = 200;
+            } 
+            if (clawCounter > 0){
+                clawCounter = clawCounter-1;
+            }
+            telemetry.addData("Lifty status", liftCounter);
+            
+            telemetry.addData("Clawy status", clawCounter);
             telemetry.update();
+            if (clawing){
+                claw.setPosition(0.9);
+            } else {
+                claw.setPosition(0);
+            }
             
             
             
@@ -380,9 +436,9 @@ public class MainCodeWithIntakeMotorNotServoYay extends LinearOpMode{
             }*/
         }
     }
-}
 
-}
+
+} 
     
 
     
